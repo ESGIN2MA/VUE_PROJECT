@@ -13,7 +13,8 @@
 		"lint": "eslint .",
 		"lint-staged": "lint-staged",
 		"format": "prettier --write src/",
-    "postinstall": "husky"
+		"postinstall": "husky",
+		"prepare": "husky"
 	},
 	"dependencies": {
 		"pinia": "^2.2.6",

@@ -5,8 +5,6 @@ import LogInView from '@/views/LogInView.vue'
 import { APP_ROUTES } from './routes'
 import RegisterView from '@/views/RegisterView.vue'
 
-
-
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
