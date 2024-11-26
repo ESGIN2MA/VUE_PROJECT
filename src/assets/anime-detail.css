@@ -1,0 +1,42 @@
+.anime-page{
+    padding: 1% 10%;
+}
+
+.anime-header{
+    display: flex;
+    flex-direction: row;
+
+    .anime-header-image{
+        width: 15%;
+    }
+}
+
+.anime-header-principal{
+    display: flex;
+    flex-direction: column;
+    padding: 0 2%;
+
+    #anime-title{
+        font-size: 2.5rem;
+    }
+
+    #anime-year{
+        font-size: 1.5rem;
+        color:grey
+    }
+
+}
+
+.anime-body{
+    display: flex;
+    flex-direction: row;
+    
+    .anime-body-text{
+        flex-basis: 80%;
+    }
+
+    .anime-body-info, #anime-legal{
+        display: flex;
+        flex-direction: column;
+    }
+}
