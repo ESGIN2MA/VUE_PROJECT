@@ -3,5 +3,6 @@
 
 <template>
   <main>
+    <p>GJVDKDHJ</p>
   </main>
 </template>
