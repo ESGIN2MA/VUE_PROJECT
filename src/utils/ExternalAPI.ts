@@ -14,7 +14,7 @@ export const fetchAnimes = async (): Promise<Anime[]> => {
 
 		// Convert the response to an array of animes
 		const animes = ref<Anime[]>(
-			response.data.data.map((anime) => ({
+			response.data.data.map((anime: { mal_id: number; url: string; images: object; trailer: object; title: string; episodes: number; score: number; scored_by: number; rank: number; synopsis: string; genres: object[] }) => ({
 				id: anime.mal_id,
 				url: anime.url,
 				images: anime.images,

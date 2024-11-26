@@ -10,8 +10,10 @@ const anime = ref<Anime>(props.anime);
 const image_url = computed(() => anime.value.images.jpg.image_url);
 
 const checkEpisodes = () => {
-	if (!anime.value.episodes) {return 'Episode(s) : UNKNOWN';}
-	return anime.value.episodes === 1 ? '---' : 'Episode(s) : ' + (anime.value.episodes as string);
+	if (!anime.value.episodes) {
+		return 'Episode(s) : UNKNOWN';
+	}
+	return anime.value.episodes === 1 ? '---' : 'Episode(s) : ' + anime.value.episodes.toString();
 };
 </script>
 
