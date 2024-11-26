@@ -7,7 +7,7 @@ import { RouterLink } from 'vue-router'
     <div class="logo-container">
       <RouterLink to="/">
         <!-- <img :src="beatboxIMG" alt="Beatbox logo" class="logo" /> -->
-        <span class="brand-name">FINDAJOB</span>
+        <span class="brand-name">My Tinder Academia</span>
       </RouterLink>
     </div>
     <div class="nav-links">
