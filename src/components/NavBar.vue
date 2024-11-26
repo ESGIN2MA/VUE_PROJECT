@@ -6,7 +6,6 @@ import { RouterLink } from 'vue-router';
 	<nav class="navbar">
 		<div class="logo-container">
 			<RouterLink to="/">
-				<!-- <img :src="beatboxIMG" alt="Beatbox logo" class="logo" /> -->
 				<span class="brand-name">My Tinder Academia</span>
 			</RouterLink>
 		</div>
@@ -24,7 +23,8 @@ import { RouterLink } from 'vue-router';
 	justify-content: space-between;
 	align-items: center;
 	padding: 1rem 2rem;
-	background-color: var(--color-background-soft);
+	background-color: #23252b;
+	color: white;
 }
 
 .logo-container {
@@ -48,7 +48,12 @@ import { RouterLink } from 'vue-router';
 	font-size: 2rem;
 	font-weight: 700;
 	letter-spacing: 0.1rem;
-	color: black;
+	color: #ff640a;
+}
+
+.brand-name:hover {
+	color: white;
+	transition: color 0.3s;
 }
 
 .nav-links {
