@@ -1,8 +1,7 @@
-<script setup lang="ts">
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <main>
-    <p>Register</p>
-  </main>
+	<main>
+		<p>Register</p>
+	</main>
 </template>

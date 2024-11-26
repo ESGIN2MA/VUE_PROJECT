@@ -3,7 +3,6 @@ import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import LogInView from '@/views/LogInView.vue'
 import UserProfileView from '@/views/UserProfileView.vue'
-
 import { APP_ROUTES } from './routes'
 import RegisterView from '@/views/RegisterView.vue'
 
@@ -40,7 +39,7 @@ const router = createRouter({
       }
     }
   ],
-})
+});
 
 router.beforeEach((to, from, next) => {
   console.log("Before Each route");
