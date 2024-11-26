@@ -13,8 +13,9 @@ import { RouterLink } from 'vue-router'
     </div>
     <div class="nav-links">
       <RouterLink to="/" class="nav-link">Home</RouterLink>
-      <RouterLink to="/register" class="nav-link">REGISTER</RouterLink>
-      <RouterLink to="/login" class="nav-link">LOGIN</RouterLink>
+      <RouterLink to="/register" class="nav-link">Register</RouterLink>
+      <RouterLink to="/login" class="nav-link">Login</RouterLink>
+      <RouterLink to="/profile" class="nav-link">Profile</RouterLink>
     </div>
   </nav>
 </template>
