@@ -3,6 +3,6 @@
 
 <template>
   <main>
-    <p>Home</p>
+    <p>Register</p>
   </main>
 </template>
