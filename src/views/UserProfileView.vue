@@ -9,6 +9,7 @@ const user = ref({
 });
 
 const isReadOnly = ref(true);
+
 function changeState() {
     isReadOnly.value = !isReadOnly.value;
 }
