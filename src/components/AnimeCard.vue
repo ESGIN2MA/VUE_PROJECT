@@ -4,12 +4,14 @@ import { useAnimeStore } from '@/stores/anime';
 import { StarIcon as StarOutlineIcon } from '@heroicons/vue/24/outline';
 import { StarIcon as StarSolidIcon } from '@heroicons/vue/24/solid';
 import { computed, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 const props = defineProps<{
 	anime: Anime;
 	favoriteCard: boolean;
 }>();
 
+const router = useRouter();
 const animeStore = useAnimeStore();
 const anime = ref<Anime>(props.anime);
 const is_favorite = computed(() => animeStore.isFavorite(anime.value));
@@ -30,10 +32,16 @@ const removeFromFavorite = () => {
 	animeStore.removeFavorite(anime.value);
 	localStorage.setItem('favorites', JSON.stringify(animeStore.favorites));
 };
+
+const animeDetails = () => {
+	router.push('/anime/' + anime.value.id.toString()).catch((error: unknown) => {
+		console.error('Failed to navigate to anime details:', error);
+	});
+};
 </script>
 
 <template>
-	<div v-if="props.favoriteCard" class="card-small">
+	<div v-if="props.favoriteCard" class="card-small" @click="animeDetails">
 		<div class="card-img-container-small">
 			<img :src="anime.images.jpg.image_url" class="card-img-top-small" />
 		</div>
@@ -45,7 +53,7 @@ const removeFromFavorite = () => {
 		</div>
 	</div>
 
-	<div v-else class="card">
+	<div v-else class="card" @click="animeDetails">
 		<div class="card-img-container">
 			<img :src="anime.images.jpg.large_image_url" class="card-img-top" />
 		</div>
@@ -76,6 +84,11 @@ const removeFromFavorite = () => {
 	padding: 1rem;
 	border: 1px solid #c5c2c2;
 	border-radius: 10px;
+	cursor: pointer;
+}
+
+.card-small:hover {
+	box-shadow: 5px 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .card-img-container-small {
@@ -126,6 +139,10 @@ const removeFromFavorite = () => {
 	margin: 1rem;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 	transition: 0.3s;
+}
+
+.card:hover {
+	box-shadow: 10px 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .card-img-container {
