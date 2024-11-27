@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import type { User } from '@/interfaces/User';
-import { APP_ROUTES } from '@/router/routes';
+import type { IUser } from '@/interfaces/User';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { useUsersStore } from '@/stores/useUsersStore';
 import { ref } from 'vue';
@@ -23,26 +22,26 @@ const currentUser = userAuthStore.currentUser;
 
 // Redirection si l'utilisateur est null
 if (!currentUser) {
-	await router.push(APP_ROUTES.LOGIN.path);
+	router.back();
 }
 
-const editableUser = ref(currentUser as User);
+const editableUser = ref(currentUser as IUser);
 
 const switchState = (newState: ProfileState) => {
 	// Action en fonction du nouvel état
 	switch (newState) {
-    case ProfileState.Lock: {
-      console.log('État: Lock - Lecture seule activée.');
+		case ProfileState.Lock: {
+			console.log('État: Lock - Lecture seule activée.');
 			currentState.value = newState;
 			break;
-    }
-    case ProfileState.Edit: {
-      console.log("État: Edit - L'utilisateur peut modifier.");
+		}
+		case ProfileState.Edit: {
+			console.log("État: Edit - L'utilisateur peut modifier.");
 			currentState.value = newState;
 			break;
-    }
-    case ProfileState.Save: {
-      const result = globalThis.confirm('Do you want to save your profile ?');
+		}
+		case ProfileState.Save: {
+			const result = globalThis.confirm('Do you want to save your profile ?');
 			if (result) {
 				try {
 					// Sauvegarder l'utilisateur
@@ -51,14 +50,14 @@ const switchState = (newState: ProfileState) => {
 					switchState(ProfileState.Lock);
 				} catch {
 					// déconnecter l'utilisateur
+					userAuthStore.logout();
 					console.log("Une erreur est survenue lors de la sauvegarde d'un utilisateur");
 				}
 			} else {
 				// Action annulée on est toujours en modification
-				console.log('Action annulée !');
 			}
 			break;
-    }
+		}
 	}
 };
 </script>
@@ -84,8 +83,8 @@ const switchState = (newState: ProfileState) => {
 
 			<!-- Bouton pour basculer l'état des champs -->
 			<!-- Boutons pour changer d'état -->
-			<button v-if="currentState === ProfileState.Lock" @click="switchState(ProfileState.Edit)">"Modify"</button>
-			<button v-if="currentState === ProfileState.Edit" @click="switchState(ProfileState.Save)">"Save"</button>
+			<button v-if="currentState === ProfileState.Lock" @click="switchState(ProfileState.Edit)">Modify</button>
+			<button v-if="currentState === ProfileState.Edit" @click="switchState(ProfileState.Save)">Save</button>
 		</form>
 	</div>
 </template>

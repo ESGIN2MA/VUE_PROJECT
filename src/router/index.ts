@@ -1,11 +1,10 @@
-
+import AnimeView from '@/views/AnimeView.vue';
 import LogInView from '@/views/LogInView.vue';
 import RegisterView from '@/views/RegisterView.vue';
 import UserProfileView from '@/views/UserProfileView.vue';
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import { APP_ROUTES } from './routes';
-import AnimeDetail from '@/views/AnimeDetail.vue';
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -42,7 +41,7 @@ const router = createRouter({
 		{
 			path: APP_ROUTES.DETAIL.path,
 			name: APP_ROUTES.DETAIL.name,
-			component: AnimeDetail,
+			component: AnimeView,
 			meta: {
 				requiresAuth: false, // true nécessite auth
 			},

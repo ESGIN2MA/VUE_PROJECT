@@ -1,13 +1,16 @@
-import type { Role, User } from '@/interfaces/User';
+import { User, type IUser } from '@/interfaces/User';
+import { APP_ROUTES } from '@/router/routes';
 import { defineStore, MutationType } from 'pinia';
 import { ref, watch } from 'vue';
+import { useRouter } from 'vue-router';
 import { useUsersStore } from './useUsersStore';
 
 export const useAuthStore = defineStore('auth', () => {
 	const usersStore = useUsersStore();
+	const router = useRouter();
 
-	const storedUser: User | null = JSON.parse(localStorage.getItem('current-user') || 'null');
-	const currentUser = ref<User | null>(storedUser);
+	const storedUser: IUser | null = JSON.parse(localStorage.getItem('current-user') || 'null');
+	const currentUser = ref<IUser | null>(storedUser);
 
 	watch(currentUser, (currentUser) => {
 		localStorage.setItem('current-user', JSON.stringify(currentUser));
@@ -27,16 +30,12 @@ export const useAuthStore = defineStore('auth', () => {
 		}
 	});
 
-	function register(user: Pick<User, 'email' | 'username' | 'password'>) {
+	function register(user: Pick<IUser, 'email' | 'username' | 'password'>) {
 		if (usersStore.users.some((u) => u.email === user.email)) {
 			throw new Error('User already exists');
 		}
-
-		usersStore.addUser({
-			...user,
-			password: btoa(user.password),
-			roles: [],
-		});
+		// hach
+		usersStore.addUser(new User(user.email, user.username, btoa(user.password)));
 	}
 
 	function login(email: string, password: string) {
@@ -45,17 +44,22 @@ export const useAuthStore = defineStore('auth', () => {
 		if (!user) {
 			throw new Error('User not found');
 		}
-
-		currentUser.value = {
-			...user,
-			roles: [...new Set([...user.roles, 'connected'])] as Role[],
-		};
+		user.isConnected = true;
+		currentUser.value = user;
 
 		usersStore.updateUser(currentUser.value);
 	}
 
 	function logout() {
+		if (!currentUser.value) {
+			return;
+		}
+		currentUser.value.isConnected = false;
+		usersStore.updateUser(currentUser.value);
 		currentUser.value = null;
+		router.push(APP_ROUTES.LOGIN.path).catch((error: unknown) => {
+			console.error('Failed to navigate', error);
+		});
 	}
 
 	return { register, login, logout, currentUser };
