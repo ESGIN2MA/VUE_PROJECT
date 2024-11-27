@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Role } from '@/interfaces/User';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { MoonIcon, SunIcon } from '@heroicons/vue/24/solid';
 import { onMounted, ref } from 'vue';
