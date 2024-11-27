@@ -6,10 +6,14 @@ export const useUsersStore = defineStore('users', () => {
 	const storedUsers: User[] = JSON.parse(localStorage.getItem('users') || '[]');
 	const users = ref<User[]>(storedUsers);
 
-	watch(users, (users) => {
-		console.log('users', users);
-		localStorage.setItem('users', JSON.stringify(users));
-	}, { deep: true });
+	watch(
+		users,
+		(users) => {
+			console.log('users', users);
+			localStorage.setItem('users', JSON.stringify(users));
+		},
+		{ deep: true },
+	);
 
 	function addUser(user: User) {
 		users.value.push(user);
