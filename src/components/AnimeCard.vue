@@ -1,43 +1,42 @@
 <script setup lang="ts">
 import type { Anime } from '@/interfaces/Anime';
-import { useAnimeStore } from '@/stores/anime';
+import router from '@/router';
+import { useFavoritesStore } from '@/stores/useFavoritesStore';
 import { StarIcon as StarOutlineIcon } from '@heroicons/vue/24/outline';
 import { StarIcon as StarSolidIcon } from '@heroicons/vue/24/solid';
 import { computed, ref } from 'vue';
-import { useRouter } from 'vue-router';
 
 const props = defineProps<{
 	anime: Anime;
 	favoriteCard: boolean;
 }>();
 
-const router = useRouter();
-const animeStore = useAnimeStore();
-const anime = ref<Anime>(props.anime);
-const is_favorite = computed(() => animeStore.isFavorite(anime.value));
+const favoritesStore = useFavoritesStore();
 
-const checkEpisodes = () => {
+const anime = ref<Anime>(props.anime);
+
+const isFavorite = computed(() => favoritesStore.isFavorite(anime.value));
+
+function checkEpisodes() {
 	if (!anime.value.episodes) {
 		return 'Episode(s) : UNKNOWN';
 	}
-	return anime.value.episodes === 1 ? '---' : 'Episode(s) : ' + anime.value.episodes.toString();
-};
+	return anime.value.episodes === 1 ? '---' : `Episode(s) : ${anime.value.episodes.toString()}`;
+}
 
-const addToFavorite = () => {
-	animeStore.addFavorite(anime.value);
-	localStorage.setItem('favorites', JSON.stringify(animeStore.favorites));
-};
+function addToFavorite() {
+	favoritesStore.addFavorite(anime.value);
+}
 
-const removeFromFavorite = () => {
-	animeStore.removeFavorite(anime.value);
-	localStorage.setItem('favorites', JSON.stringify(animeStore.favorites));
-};
+function removeFromFavorite() {
+	favoritesStore.removeFavorite(anime.value);
+}
 
-const animeDetails = () => {
+function animeDetails() {
 	router.push('/anime/' + anime.value.id.toString()).catch((error: unknown) => {
 		console.error('Failed to navigate to anime details:', error);
 	});
-};
+}
 </script>
 
 <template>
@@ -67,7 +66,9 @@ const animeDetails = () => {
 				<span>{{ anime.genres.map((genre) => genre.name).join(' / ') }}</span>
 			</div>
 			<div @click.stop>
-				<StarSolidIcon v-if="is_favorite" @click="removeFromFavorite" class="btn trash">Remove from favorites</StarSolidIcon>
+				<StarSolidIcon v-if="isFavorite" @click="removeFromFavorite" class="btn trash"
+					>Remove from favorites</StarSolidIcon
+				>
 				<StarOutlineIcon v-else @click="addToFavorite" class="btn">Add to favorites</StarOutlineIcon>
 			</div>
 		</div>
@@ -115,6 +116,7 @@ const animeDetails = () => {
 	font-weight: bold;
 	display: -webkit-box;
 	-webkit-line-clamp: 2;
+	line-clamp: 2;
 	-webkit-box-orient: vertical;
 	overflow: hidden;
 	text-overflow: ellipsis;

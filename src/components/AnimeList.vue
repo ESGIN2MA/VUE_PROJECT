@@ -1,44 +1,20 @@
 <script setup lang="ts">
 import AnimeCard from '@/components/AnimeCard.vue';
-import type { Anime } from '@/interfaces/Anime';
-import { useAnimeStore } from '@/stores/anime';
-import { fetchAnimes } from '@/utils/ExternalAPI';
-import { onMounted, ref } from 'vue';
+import { useAnimesStore } from '@/stores/useAnimesStore';
 
-const animeStore = useAnimeStore();
-
-const animes = ref<Anime[]>([]);
-const loading = ref(true);
-const error = ref<string | null>(null);
-
-onMounted(async () => {
-	try {
-		loading.value = true;
-		const fetchedAnimes: Anime[] = await fetchAnimes();
-
-		animeStore.setAnimes(fetchedAnimes);
-		animes.value = fetchedAnimes;
-
-		error.value = null;
-	} catch (fetchError) {
-		console.error('Error while loading animes :', fetchError);
-		error.value = 'Unable to load anime list';
-	} finally {
-		loading.value = false;
-	}
-});
+const animeStore = useAnimesStore();
 </script>
 
 <template>
 	<main>
-		<div v-if="loading" class="loading">Loading animes...</div>
+		<div v-if="animeStore.loading" class="loading">Loading animes...</div>
 
-		<div v-else-if="error" class="error">
-			{{ error }}
+		<div v-else-if="!!animeStore.error" class="error">
+			{{ animeStore.error }}
 		</div>
 
-		<div v-else-if="animes.length > 0" class="anime-list">
-			<div v-for="anime in animes" :key="anime.id" class="anime-item">
+		<div v-else-if="animeStore.animes.length > 0" class="anime-list">
+			<div v-for="anime in animeStore.animes" :key="anime.id" class="anime-item">
 				<AnimeCard :anime="anime" :favoriteCard="false" />
 			</div>
 		</div>

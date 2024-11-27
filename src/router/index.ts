@@ -1,4 +1,4 @@
-import AnimeDetail from '@/views/AnimeDetail.vue';
+import AnimeView from '@/views/AnimeView.vue';
 import LogInView from '@/views/LogInView.vue';
 import RegisterView from '@/views/RegisterView.vue';
 import { createRouter, createWebHistory } from 'vue-router';
@@ -26,7 +26,7 @@ const router = createRouter({
 		{
 			path: APP_ROUTES.DETAIL.path,
 			name: APP_ROUTES.DETAIL.name,
-			component: AnimeDetail,
+			component: AnimeView,
 		},
 	],
 });
