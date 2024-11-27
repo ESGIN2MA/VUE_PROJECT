@@ -5,6 +5,7 @@ import UserProfileView from '@/views/UserProfileView.vue';
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import { APP_ROUTES } from './routes';
+import AdminView from '@/views/AdminView.vue';
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -46,6 +47,11 @@ const router = createRouter({
 				requiresAuth: false, // true nécessite auth
 			},
 		},
+		{
+			path: APP_ROUTES.ADMIN.path,
+			name: APP_ROUTES.ADMIN.name,
+			component: AdminView,
+		}
 	],
 });
 

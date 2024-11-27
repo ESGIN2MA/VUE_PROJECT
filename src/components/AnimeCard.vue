@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { Anime } from '@/interfaces/Anime';
 import router from '@/router';
+import { useAuthStore } from '@/stores/useAuthStore';
 import { useFavoritesStore } from '@/stores/useFavoritesStore';
 import { StarIcon as StarOutlineIcon } from '@heroicons/vue/24/outline';
 import { StarIcon as StarSolidIcon } from '@heroicons/vue/24/solid';
@@ -10,6 +11,8 @@ const props = defineProps<{
 	anime: Anime;
 	favoriteCard: boolean;
 }>();
+
+const authStore = useAuthStore();
 
 const favoritesStore = useFavoritesStore();
 
@@ -33,6 +36,14 @@ function removeFromFavorite() {
 }
 
 function animeDetails() {
+	if (!authStore.currentUser) {
+		router.push('/login').catch((error: unknown) => {
+			console.error('Failed to navigate to login:', error);
+		});
+
+		return;
+	}
+
 	router.push('/anime/' + anime.value.id.toString()).catch((error: unknown) => {
 		console.error('Failed to navigate to anime details:', error);
 	});
