@@ -48,7 +48,6 @@ function endEdit() {
 	flex-direction: row;
 	justify-content: space-between;
 	align-items: center;
-	background-color: lightgray;
 	border: 1px solid gray;
 	border-radius: 15px;
 	padding: 0.5% 1%;
