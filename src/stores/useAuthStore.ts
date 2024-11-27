@@ -1,10 +1,10 @@
 import type { Role, User } from '@/interfaces/User';
-import { defineStore } from 'pinia';
+import { defineStore, MutationType } from 'pinia';
 import { ref, watch } from 'vue';
 import { useUsersStore } from './useUsersStore';
 
 export const useAuthStore = defineStore('auth', () => {
-	const userStore = useUsersStore();
+	const usersStore = useUsersStore();
 
 	const storedUser: User | null = JSON.parse(localStorage.getItem('current-user') || 'null');
 	const currentUser = ref<User | null>(storedUser);
@@ -13,12 +13,26 @@ export const useAuthStore = defineStore('auth', () => {
 		localStorage.setItem('current-user', JSON.stringify(currentUser));
 	});
 
+	usersStore.$subscribe((mutation, state) => {
+		if (mutation.type !== MutationType.patchObject || !currentUser.value) {
+			return;
+		}
+
+		// Temporaire, gestion des utilisateurs locaux. Dans le cas ou l'on modifie un utilisateur
+		// on met à jour notre propre utilisateur
+		// Quand il y aura l'administration il faudra avoir un moyen de détecter quel utilisateur a été modifié
+		const foundUser = state.users.find((user) => user.email === currentUser.value?.email);
+		if (foundUser) {
+			currentUser.value = foundUser;
+		}
+	});
+
 	function register(user: Pick<User, 'email' | 'username' | 'password'>) {
-		if (userStore.users.some((u) => u.email === user.email)) {
+		if (usersStore.users.some((u) => u.email === user.email)) {
 			throw new Error('User already exists');
 		}
 
-		userStore.addUser({
+		usersStore.addUser({
 			...user,
 			password: btoa(user.password),
 			roles: [],
@@ -26,7 +40,7 @@ export const useAuthStore = defineStore('auth', () => {
 	}
 
 	function login(email: string, password: string) {
-		const user = userStore.users.find((u) => u.email === email && u.password === btoa(password));
+		const user = usersStore.users.find((u) => u.email === email && u.password === btoa(password));
 
 		if (!user) {
 			throw new Error('User not found');
@@ -37,7 +51,7 @@ export const useAuthStore = defineStore('auth', () => {
 			roles: [...new Set([...user.roles, 'connected'])] as Role[],
 		};
 
-		userStore.updateUser(currentUser.value);
+		usersStore.updateUser(currentUser.value);
 	}
 
 	return { register, login, currentUser };
