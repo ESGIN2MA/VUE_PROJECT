@@ -17,6 +17,7 @@ const authStore = useAuthStore();
 			<RouterLink to="/register" class="nav-link" v-if="!authStore.currentUser">Register</RouterLink>
 			<RouterLink to="/login" class="nav-link" v-if="!authStore.currentUser">Login</RouterLink>
 			<RouterLink to="/profile" class="nav-link" v-if="!!authStore.currentUser">Profile</RouterLink>
+			<button v-if="!!authStore.currentUser" @click="authStore.logout" class="nav-link">Logout</button>
 		</div>
 	</nav>
 </template>
@@ -72,6 +73,10 @@ const authStore = useAuthStore();
 	padding: 0.5rem 1rem;
 	border-radius: 4px;
 	transition: background-color 0.3s;
+	background-color: transparent;
+	border: 0;
+	font-size: 1rem;
+	cursor: pointer;
 }
 
 .nav-link:hover {
