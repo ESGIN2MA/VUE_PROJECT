@@ -4,9 +4,10 @@ export interface AppRoute {
 }
 
 export const APP_ROUTES: Record<string, AppRoute> = {
+	HOME: { path: '/', name: 'home' },
 	LOGIN: { path: '/login', name: 'login' },
 	REGISTER: { path: '/register', name: 'register' },
-	HOME: { path: '/', name: 'home' },
+	PROFILE: { path: '/profile', name: 'profile' },
 	DETAIL: { path: '/anime/:id', name: 'anime' },
 };
 

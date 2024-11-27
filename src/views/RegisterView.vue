@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import router from '@/router';
+import { APP_ROUTES } from '@/router/routes';
 import { useAuthStore } from '@/stores/useAuthStore';
 import { ref } from 'vue';
 
@@ -20,7 +21,7 @@ async function register(event: MouseEvent) {
 			password: password.value,
 		});
 
-		await router.push('/login');
+		await router.push(APP_ROUTES.HOME.path);
 	} catch (error_) {
 		error.value = (error_ as Error).message;
 
