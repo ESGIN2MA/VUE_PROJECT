@@ -39,7 +39,7 @@ onMounted(async () => {
 
 		<div v-else-if="animes.length > 0" class="anime-list">
 			<div v-for="anime in animes" :key="anime.id" class="anime-item">
-				<AnimeCard :anime="anime" />
+				<AnimeCard :anime="anime" :favoriteCard="false" />
 			</div>
 		</div>
 
@@ -67,12 +67,7 @@ onMounted(async () => {
 }
 
 .anime-item {
-	padding: 10px;
 	cursor: pointer;
 	transition: background-color 0.3s;
-}
-
-.anime-item:hover {
-	background-color: #f0f0f0;
 }
 </style>
