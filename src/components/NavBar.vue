@@ -69,7 +69,7 @@ const authStore = useAuthStore();
 .nav-link {
 	color: var(--color-text);
 	text-decoration: none;
-	font-weight: 500;
+	font-weight: 800;
 	padding: 0.5rem 1rem;
 	border-radius: 4px;
 	transition: background-color 0.3s;
@@ -84,8 +84,8 @@ const authStore = useAuthStore();
 }
 
 .nav-link.router-link-active {
-	color: blue;
-	background-color: lightcyan;
+	color: black;
+	background-color: #ff640a;
 }
 
 @media (max-width: 768px) {

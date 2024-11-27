@@ -13,7 +13,7 @@ const { favorites } = storeToRefs(animeStore);
 	<main>
 		<div v-if="favorites.length > 0" class="anime-list">
 			<carousel :items-to-show="favorites.length / 1.2">
-				<slide v-for="anime in favorites" :key="anime.id" :transition="30" :wrapAround="true" :autoplay="300">
+				<slide v-for="anime in favorites" :key="anime.id">
 					<AnimeCard :anime="anime" :favoriteCard="true" />
 				</slide>
 			</carousel>
