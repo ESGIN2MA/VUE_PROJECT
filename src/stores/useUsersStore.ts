@@ -1,24 +1,29 @@
+import type { User } from '@/interfaces/User';
 import { defineStore } from 'pinia';
-import { ref } from 'vue';
-
-export interface User {
-	email: string;
-	username: string;
-	password: string;
-}
+import { ref, watch } from 'vue';
 
 export const useUsersStore = defineStore('users', () => {
-	const users = ref<User[]>([]);
+	const storedUsers: User[] = JSON.parse(localStorage.getItem('users') || '[]');
+	const users = ref<User[]>(storedUsers);
+
+	watch(users, (users) => {
+		console.log('users', users);
+		localStorage.setItem('users', JSON.stringify(users));
+	}, { deep: true });
 
 	function addUser(user: User) {
-		if (users.value.some((u) => u.email === user.email)) {
-			throw new Error('User already exists');
-		}
-
-		user.password = btoa(user.password);
-
 		users.value.push(user);
 	}
 
-	return { addUser };
+	function updateUser(user: User) {
+		const index = users.value.findIndex((u) => u.email === user.email);
+
+		if (index === -1) {
+			throw new Error('User not found');
+		}
+
+		users.value[index] = user;
+	}
+
+	return { users, addUser, updateUser };
 });
