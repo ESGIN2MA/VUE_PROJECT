@@ -48,7 +48,7 @@ const animeDetails = () => {
 		<div class="card-body-small">
 			<p class="card-title-small">{{ anime.title }} {{ anime.episodes === 1 ? '(MOVIE)' : '' }}</p>
 		</div>
-		<div class="card-trash-small">
+		<div class="card-trash-small" @click.stop>
 			<StarSolidIcon @click="removeFromFavorite" class="btn-trash-small">Remove from favorites</StarSolidIcon>
 		</div>
 	</div>
@@ -66,10 +66,10 @@ const animeDetails = () => {
 				Genre(s):
 				<span>{{ anime.genres.map((genre) => genre.name).join(' / ') }}</span>
 			</div>
-			<StarSolidIcon v-if="is_favorite" @click="removeFromFavorite" class="btn trash"
-				>Remove from favorites</StarSolidIcon
-			>
-			<StarOutlineIcon v-else @click="addToFavorite" class="btn">Add to favorites</StarOutlineIcon>
+			<div @click.stop>
+				<StarSolidIcon v-if="is_favorite" @click="removeFromFavorite" class="btn trash">Remove from favorites</StarSolidIcon>
+				<StarOutlineIcon v-else @click="addToFavorite" class="btn">Add to favorites</StarOutlineIcon>
+			</div>
 		</div>
 	</div>
 </template>
