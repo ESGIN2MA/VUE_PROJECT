@@ -54,5 +54,9 @@ export const useAuthStore = defineStore('auth', () => {
 		usersStore.updateUser(currentUser.value);
 	}
 
-	return { register, login, currentUser };
+	function logout() {
+		currentUser.value = null;
+	}
+
+	return { register, login, logout, currentUser };
 });

@@ -1,19 +1,17 @@
 <script setup lang="ts">
 import AnimeCard from '@/components/AnimeCard.vue';
-import { useAnimeStore } from '@/stores/anime';
-import { storeToRefs } from 'pinia';
 import 'vue3-carousel/dist/carousel.css';
+import { useFavoritesStore } from '@/stores/useFavoritesStore';
 import { Carousel, Slide } from 'vue3-carousel';
 
-const animeStore = useAnimeStore();
-const { favorites } = storeToRefs(animeStore);
+const favoritesStore = useFavoritesStore();
 </script>
 
 <template>
 	<main>
-		<div v-if="favorites.length > 0" class="anime-list">
-			<carousel :items-to-show="favorites.length / 1.2">
-				<slide v-for="anime in favorites" :key="anime.id" :transition="30" :wrapAround="true" :autoplay="300">
+		<div v-if="favoritesStore.favorites.length > 0" class="anime-list">
+			<carousel :items-to-show="favoritesStore.favorites.length / 1.2">
+				<slide v-for="anime in favoritesStore.favorites" :key="anime.id">
 					<AnimeCard :anime="anime" :favoriteCard="true" />
 				</slide>
 			</carousel>

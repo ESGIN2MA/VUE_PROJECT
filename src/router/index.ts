@@ -1,10 +1,11 @@
+
 import LogInView from '@/views/LogInView.vue';
 import RegisterView from '@/views/RegisterView.vue';
 import UserProfileView from '@/views/UserProfileView.vue';
 import { createRouter, createWebHistory } from 'vue-router';
-import AnimeDetail from '../views/AnimeDetail.vue';
 import HomeView from '../views/HomeView.vue';
 import { APP_ROUTES } from './routes';
+import AnimeDetail from '@/views/AnimeDetail.vue';
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),

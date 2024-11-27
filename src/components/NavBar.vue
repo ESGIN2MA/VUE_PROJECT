@@ -1,8 +1,30 @@
 <script setup lang="ts">
 import { useAuthStore } from '@/stores/useAuthStore';
 import { RouterLink } from 'vue-router';
+import { onMounted, ref } from 'vue';
+import { MoonIcon, SunIcon } from '@heroicons/vue/24/solid';
 
 const authStore = useAuthStore();
+
+const isDarkMode = ref(false);
+
+const toggleTheme = () => {
+  isDarkMode.value = !isDarkMode.value;
+  if (isDarkMode.value) {
+    document.body.classList.add('body-dark');
+    localStorage.setItem('theme', 'dark');
+  } else {
+    document.body.classList.remove('body-dark');
+    localStorage.setItem('theme', 'light');
+  }
+};
+
+onMounted(() => {
+  isDarkMode.value = localStorage.getItem('theme') === 'dark';
+  if (isDarkMode.value) {
+    document.body.classList.add('body-dark');
+  }
+});
 </script>
 
 <template>
@@ -17,6 +39,10 @@ const authStore = useAuthStore();
 			<RouterLink to="/register" class="nav-link" v-if="!authStore.currentUser">Register</RouterLink>
 			<RouterLink to="/login" class="nav-link" v-if="!authStore.currentUser">Login</RouterLink>
 			<RouterLink to="/profile" class="nav-link" v-if="!!authStore.currentUser">Profile</RouterLink>
+			<button @click="toggleTheme" class="theme-toggle-btn">
+				<MoonIcon class="theme-toggle-btn-icon" v-if="!isDarkMode" />
+				<SunIcon  class="theme-toggle-btn-icon" v-else />
+			</button>
 		</div>
 	</nav>
 </template>
@@ -68,7 +94,7 @@ const authStore = useAuthStore();
 .nav-link {
 	color: var(--color-text);
 	text-decoration: none;
-	font-weight: 500;
+	font-weight: 800;
 	padding: 0.5rem 1rem;
 	border-radius: 4px;
 	transition: background-color 0.3s;
@@ -79,8 +105,23 @@ const authStore = useAuthStore();
 }
 
 .nav-link.router-link-active {
-	color: blue;
-	background-color: lightcyan;
+	color: black;
+	background-color: #ff640a;
+}
+
+.theme-toggle-btn {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.theme-toggle-btn:hover {
+  background-color: var(--color-background-mute);
+}
+
+.theme-toggle-btn-icon {
+  height: 30px;
 }
 
 @media (max-width: 768px) {
