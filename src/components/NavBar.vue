@@ -1,29 +1,29 @@
 <script setup lang="ts">
 import { useAuthStore } from '@/stores/useAuthStore';
-import { RouterLink } from 'vue-router';
-import { onMounted, ref } from 'vue';
 import { MoonIcon, SunIcon } from '@heroicons/vue/24/solid';
+import { onMounted, ref } from 'vue';
+import { RouterLink } from 'vue-router';
 
 const authStore = useAuthStore();
 
 const isDarkMode = ref(false);
 
 const toggleTheme = () => {
-  isDarkMode.value = !isDarkMode.value;
-  if (isDarkMode.value) {
-    document.body.classList.add('body-dark');
-    localStorage.setItem('theme', 'dark');
-  } else {
-    document.body.classList.remove('body-dark');
-    localStorage.setItem('theme', 'light');
-  }
+	isDarkMode.value = !isDarkMode.value;
+	if (isDarkMode.value) {
+		document.body.classList.add('body-dark');
+		localStorage.setItem('theme', 'dark');
+	} else {
+		document.body.classList.remove('body-dark');
+		localStorage.setItem('theme', 'light');
+	}
 };
 
 onMounted(() => {
-  isDarkMode.value = localStorage.getItem('theme') === 'dark';
-  if (isDarkMode.value) {
-    document.body.classList.add('body-dark');
-  }
+	isDarkMode.value = localStorage.getItem('theme') === 'dark';
+	if (isDarkMode.value) {
+		document.body.classList.add('body-dark');
+	}
 });
 </script>
 
@@ -41,7 +41,7 @@ onMounted(() => {
 			<RouterLink to="/profile" class="nav-link" v-if="!!authStore.currentUser">Profile</RouterLink>
 			<button @click="toggleTheme" class="theme-toggle-btn">
 				<MoonIcon class="theme-toggle-btn-icon" v-if="!isDarkMode" />
-				<SunIcon  class="theme-toggle-btn-icon" v-else />
+				<SunIcon class="theme-toggle-btn-icon" v-else />
 			</button>
 		</div>
 	</nav>
@@ -110,18 +110,18 @@ onMounted(() => {
 }
 
 .theme-toggle-btn {
-  background: none;
-  border: none;
-  color: white;
-  cursor: pointer;
+	background: none;
+	border: none;
+	color: white;
+	cursor: pointer;
 }
 
 .theme-toggle-btn:hover {
-  background-color: var(--color-background-mute);
+	background-color: var(--color-background-mute);
 }
 
 .theme-toggle-btn-icon {
-  height: 30px;
+	height: 30px;
 }
 
 @media (max-width: 768px) {
