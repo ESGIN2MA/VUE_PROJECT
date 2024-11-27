@@ -1,13 +1,20 @@
 <script setup lang="ts">
 import type { Anime } from '@/interfaces/Anime';
+import { useAnimeStore } from '@/stores/anime';
+import { StarIcon as StarOutlineIcon } from '@heroicons/vue/24/outline';
+import { StarIcon as StarSolidIcon } from '@heroicons/vue/24/solid';
 import { computed, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 const props = defineProps<{
 	anime: Anime;
+	favoriteCard: boolean;
 }>();
 
+const router = useRouter();
+const animeStore = useAnimeStore();
 const anime = ref<Anime>(props.anime);
-const image_url = computed(() => anime.value.images.jpg.image_url);
+const is_favorite = computed(() => animeStore.isFavorite(anime.value));
 
 const checkEpisodes = () => {
 	if (!anime.value.episodes) {
@@ -15,38 +22,127 @@ const checkEpisodes = () => {
 	}
 	return anime.value.episodes === 1 ? '---' : 'Episode(s) : ' + anime.value.episodes.toString();
 };
+
+const addToFavorite = () => {
+	animeStore.addFavorite(anime.value);
+	localStorage.setItem('favorites', JSON.stringify(animeStore.favorites));
+};
+
+const removeFromFavorite = () => {
+	animeStore.removeFavorite(anime.value);
+	localStorage.setItem('favorites', JSON.stringify(animeStore.favorites));
+};
+
+const animeDetails = () => {
+	router.push('/anime/' + anime.value.id.toString()).catch((error: unknown) => {
+		console.error('Failed to navigate to anime details:', error);
+	});
+};
 </script>
 
 <template>
-	<div class="card">
+	<div v-if="props.favoriteCard" class="card-small" @click="animeDetails">
+		<div class="card-img-container-small">
+			<img :src="anime.images.jpg.image_url" class="card-img-top-small" />
+		</div>
+		<div class="card-body-small">
+			<p class="card-title-small">{{ anime.title }} {{ anime.episodes === 1 ? '(MOVIE)' : '' }}</p>
+		</div>
+		<div class="card-trash-small">
+			<StarSolidIcon @click="removeFromFavorite" class="btn-trash-small">Remove from favorites</StarSolidIcon>
+		</div>
+	</div>
+
+	<div v-else class="card" @click="animeDetails">
 		<div class="card-img-container">
-			<img :src="image_url" class="card-img-top" />
+			<img :src="anime.images.jpg.large_image_url" class="card-img-top" />
 		</div>
 		<div class="card-body">
 			<p class="card-title">{{ anime.title }} {{ anime.episodes === 1 ? '(MOVIE)' : '' }}</p>
 			<p class="card-text">{{ checkEpisodes() }}</p>
 
-			<p class="card-text">Score: {{ anime.score }} / 10</p>
-			<p class="card-text">Rank: {{ anime.rank }}</p>
+			<p class="card-text">Score: {{ anime.score }} / 10 | Rank: {{ anime.rank }}</p>
 			<div class="card-text card-genre">
 				Genre(s):
 				<span>{{ anime.genres.map((genre) => genre.name).join(' / ') }}</span>
 			</div>
-			<a href="#" class="btn btn-primary">Add to favorites</a>
+			<StarSolidIcon v-if="is_favorite" @click="removeFromFavorite" class="btn trash"
+				>Remove from favorites</StarSolidIcon
+			>
+			<StarOutlineIcon v-else @click="addToFavorite" class="btn">Add to favorites</StarOutlineIcon>
 		</div>
 	</div>
 </template>
 
 <style scoped>
+.card-small {
+	display: flex;
+	align-items: center;
+	width: 400px;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+	transition: 0.3s;
+	padding: 1rem;
+	border: 1px solid #c5c2c2;
+	border-radius: 10px;
+	cursor: pointer;
+}
+
+.card-small:hover {
+	box-shadow: 5px 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card-img-container-small {
+	width: 25%;
+	height: 100px;
+	margin-right: 0.5rem;
+	flex-shrink: 0;
+}
+
+.card-img-top-small {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+}
+
+.card-body-small {
+	width: 50%;
+	flex-grow: 1;
+	margin-right: 0.5rem;
+}
+
+.card-title-small {
+	font-size: 1rem;
+	font-weight: bold;
+	display: -webkit-box;
+	-webkit-line-clamp: 2;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.card-trash-small {
+	width: 10%;
+	height: 100%;
+	background-color: #007bff;
+	border: none;
+	color: white;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+	border-radius: 0.25rem;
+	padding: 0.3rem;
+}
+
 .card {
-	width: 18rem;
+	width: 15rem;
 	margin: 1rem;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 	transition: 0.3s;
 }
 
 .card:hover {
-	box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+	box-shadow: 10px 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .card-img-container {
@@ -65,17 +161,15 @@ const checkEpisodes = () => {
 }
 
 .card-title {
-	font-size: 1.25rem;
 	font-weight: bold;
 	overflow: hidden;
-	height: 3rem;
+	height: 2rem;
 	text-overflow: ellipsis;
 }
 
 .card-text {
 	font-size: 1rem;
-	color: #555;
-	margin-bottom: 1rem;
+	color: #c5c2c2;
 	height: auto;
 	overflow: hidden;
 	text-overflow: ellipsis;
@@ -92,17 +186,19 @@ const checkEpisodes = () => {
 }
 
 .btn {
+	width: 2rem;
+	height: 2rem;
 	background-color: #007bff;
 	border: none;
 	color: white;
-	padding: 0.5rem 1rem;
+	padding: 0.5rem 0.5rem;
 	text-align: center;
 	text-decoration: none;
 	display: inline-block;
 	font-size: 1rem;
-	margin-top: 0.5rem;
 	cursor: pointer;
 	border-radius: 0.25rem;
+	margin-left: auto;
 }
 
 .btn:hover {
