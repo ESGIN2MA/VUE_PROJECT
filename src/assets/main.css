@@ -1,6 +1,6 @@
 body {
-	background-color: black;
-	color: white;
+	background-color: var(--color-background);
+	color: var(--color-text);
 	margin: 0 auto;
 	font-family: 'Lato', 'Helvetica Neue', 'helvetica', 'sans-serif';
 	overflow-x: hidden;

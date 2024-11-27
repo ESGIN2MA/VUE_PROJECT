@@ -73,8 +73,9 @@ const removeFromFavorite = () => {
 	width: 400px;
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 	transition: 0.3s;
-	padding: 0.5rem;
+	padding: 1rem;
 	border: 1px solid #c5c2c2;
+	border-radius: 10px;
 }
 
 .card-img-container-small {
