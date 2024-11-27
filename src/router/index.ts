@@ -3,6 +3,7 @@ import RegisterView from '@/views/RegisterView.vue';
 import { createRouter, createWebHistory } from 'vue-router';
 import HomeView from '../views/HomeView.vue';
 import { APP_ROUTES } from './routes';
+import AnimeDetail from '@/views/AnimeDetail.vue';
 
 const router = createRouter({
 	history: createWebHistory(import.meta.env.BASE_URL),
@@ -22,6 +23,11 @@ const router = createRouter({
 			name: APP_ROUTES.REGISTER.name,
 			component: RegisterView,
 		},
+    	{
+      		path: APP_ROUTES.DETAIL.path,
+      		name: APP_ROUTES.DETAIL.name,
+			component: AnimeDetail,
+    	}
 	],
 });
 
