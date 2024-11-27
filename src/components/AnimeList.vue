@@ -20,27 +20,27 @@ onMounted(async () => {
 const sortedAnimes = computed(() => {
 	return [...animes.value].sort((a, b) => {
 		switch (sortOrder.value) {
-		case 'rank-asc': {
-			return a.rank - b.rank;
-		}
-		case 'rank-desc': {
-			return b.rank - a.rank;
-		}
-		case 'name-asc': {
-			return a.title > b.title ? 1 : -1;
-		}
-		case 'name-desc': {
-			return b.title < a.title ? -1 : 1;
-		}
-		case 'ep-n-asc': {
-			return a.episodes - b.episodes;
-		}
-		case 'ep-n-desc': {
-			return b.episodes - a.episodes;
-		}
-		default: {
-			return 0;
-		}
+			case 'rank-asc': {
+				return a.rank - b.rank;
+			}
+			case 'rank-desc': {
+				return b.rank - a.rank;
+			}
+			case 'name-asc': {
+				return a.title > b.title ? 1 : -1;
+			}
+			case 'name-desc': {
+				return b.title < a.title ? -1 : 1;
+			}
+			case 'ep-n-asc': {
+				return a.episodes - b.episodes;
+			}
+			case 'ep-n-desc': {
+				return b.episodes - a.episodes;
+			}
+			default: {
+				return 0;
+			}
 		}
 	});
 });

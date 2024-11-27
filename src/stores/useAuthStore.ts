@@ -54,9 +54,15 @@ export const useAuthStore = defineStore('auth', () => {
 		if (!currentUser.value) {
 			return;
 		}
+
 		currentUser.value.isConnected = false;
+
 		usersStore.updateUser(currentUser.value);
+
 		currentUser.value = null;
+
+		localStorage.removeItem('favorites');
+
 		router.push(APP_ROUTES.LOGIN.path).catch((error: unknown) => {
 			console.error('Failed to navigate', error);
 		});

@@ -1,3 +1,4 @@
+import AdminView from '@/views/AdminView.vue';
 import AnimeView from '@/views/AnimeView.vue';
 import LogInView from '@/views/LogInView.vue';
 import RegisterView from '@/views/RegisterView.vue';
@@ -45,6 +46,11 @@ const router = createRouter({
 			meta: {
 				requiresAuth: false, // true nécessite auth
 			},
+		},
+		{
+			path: APP_ROUTES.ADMIN.path,
+			name: APP_ROUTES.ADMIN.name,
+			component: AdminView,
 		},
 	],
 });

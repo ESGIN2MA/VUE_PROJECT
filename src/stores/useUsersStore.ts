@@ -29,5 +29,15 @@ export const useUsersStore = defineStore('users', () => {
 		users.value[index] = user;
 	}
 
-	return { users, addUser, updateUser };
+	function deleteUser(user: IUser) {
+		const index = users.value.indexOf(user);
+
+		if (index === -1) {
+			return;
+		}
+
+		users.value.splice(index, 1);
+	}
+
+	return { users, addUser, updateUser, deleteUser };
 });

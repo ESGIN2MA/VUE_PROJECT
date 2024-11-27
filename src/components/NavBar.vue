@@ -39,6 +39,8 @@ onMounted(() => {
 			<RouterLink to="/register" class="nav-link" v-if="!authStore.currentUser">Register</RouterLink>
 			<RouterLink to="/login" class="nav-link" v-if="!authStore.currentUser">Login</RouterLink>
 			<RouterLink to="/profile" class="nav-link" v-if="!!authStore.currentUser">Profile</RouterLink>
+			<RouterLink to="/admin" class="nav-link" v-if="authStore.currentUser">Admin</RouterLink>
+			<button v-if="!!authStore.currentUser" @click="authStore.logout" class="nav-link">Logout</button>
 			<button @click="toggleTheme" class="theme-toggle-btn">
 				<MoonIcon class="theme-toggle-btn-icon" v-if="!isDarkMode" />
 				<SunIcon class="theme-toggle-btn-icon" v-else />
