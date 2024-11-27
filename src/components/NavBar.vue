@@ -1,5 +1,8 @@
 <script setup lang="ts">
+import { useAuthStore } from '@/stores/useAuthStore';
 import { RouterLink } from 'vue-router';
+
+const authStore = useAuthStore();
 </script>
 
 <template>
@@ -11,8 +14,9 @@ import { RouterLink } from 'vue-router';
 		</div>
 		<div class="nav-links">
 			<RouterLink to="/" class="nav-link">Home</RouterLink>
-			<RouterLink to="/register" class="nav-link">REGISTER</RouterLink>
-			<RouterLink to="/login" class="nav-link">LOGIN</RouterLink>
+			<RouterLink to="/register" class="nav-link" v-if="!authStore.currentUser">Register</RouterLink>
+			<RouterLink to="/login" class="nav-link" v-if="!authStore.currentUser">Login</RouterLink>
+			<RouterLink to="/profile" class="nav-link" v-if="!!authStore.currentUser">Profile</RouterLink>
 		</div>
 	</nav>
 </template>

@@ -1,21 +1,31 @@
 <script setup lang="ts">
-import { useUsersStore } from '@/stores/useUsersStore';
+import router from '@/router';
+import { useAuthStore } from '@/stores/useAuthStore';
 import { ref } from 'vue';
 
-const store = useUsersStore();
+const store = useAuthStore();
 
 const username = ref('');
 const email = ref('');
 const password = ref('');
+const error = ref('');
 
-function register(event: MouseEvent) {
+async function register(event: MouseEvent) {
 	event.preventDefault();
 
-	store.addUser({
-		username: username.value,
-		email: email.value,
-		password: password.value,
-	});
+	try {
+		store.register({
+			username: username.value,
+			email: email.value,
+			password: password.value,
+		});
+
+		await router.push('/login');
+	} catch (error_) {
+		error.value = (error_ as Error).message;
+
+		console.error(error);
+	}
 }
 </script>
 
@@ -30,6 +40,7 @@ function register(event: MouseEvent) {
 			<label for="password">Password</label>
 			<input type="password" id="password" name="password" required v-model="password" />
 			<button id="submit" type="submit" @click="register">Register</button>
+			<p id="error" v-if="!!error">{{ error }}</p>
 		</form>
 	</main>
 </template>
@@ -44,6 +55,11 @@ form label {
 }
 
 #submit {
+	margin-top: 1rem;
+}
+
+#error {
+	color: red;
 	margin-top: 1rem;
 }
 </style>
